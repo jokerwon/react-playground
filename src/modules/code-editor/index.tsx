@@ -1,15 +1,17 @@
+import { useContext } from 'react'
+import { debounce } from 'lodash-es'
+import { PlaygroundContext } from '../../context/PlaygroundContext'
 import Editor from './Editor'
 import Files from './Files'
 
 export default function CodeEditor() {
-  const file = {
-    name: 'a.tsx',
-    value: 'const a = <div>guang</div>',
-    language: 'typescript',
-  }
+  const { files, selectedFileName, setFiles } = useContext(PlaygroundContext)
 
-  function onEditorChange(...args: any[]) {
-    console.log(...args)
+  const file = files[selectedFileName]
+
+  function onEditorChange(value?: string) {
+    files[file.name].value = value!
+    setFiles({ ...files })
   }
 
   return (
@@ -18,7 +20,7 @@ export default function CodeEditor() {
         <Files />
       </div>
       <div className="flex-1">
-        <Editor file={file} onChange={onEditorChange} />
+        <Editor file={file} onChange={debounce(onEditorChange, 500)} />
       </div>
     </div>
   )

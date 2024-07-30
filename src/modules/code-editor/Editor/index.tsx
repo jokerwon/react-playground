@@ -18,20 +18,26 @@ export default function Editor(props: Props) {
   const { file, onChange, options } = props
 
   const onEditorMount: OnMount = (editor, monaco) => {
+    // 监听按键
     editor.addCommand(monaco.KeyMod.Shift | monaco.KeyMod.Alt | monaco.KeyCode.KeyF, () => {
+      // 执行格式化命令
       editor.getAction('editor.action.formatDocument')?.run()
     })
 
+    // 设置 tsconfig.json
     monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
       jsx: monaco.languages.typescript.JsxEmit.Preserve,
       esModuleInterop: true,
     })
 
+    // 初始化 ATA
     const ata = createATA((code, path) => {
       monaco.languages.typescript.typescriptDefaults.addExtraLib(code, `file://${path}`)
     })
 
+    // 监听文件内容变化
     editor.onDidChangeModelContent(() => {
+      // 内容变化时解析依赖的类型并自动下载
       ata(editor.getValue())
     })
 
