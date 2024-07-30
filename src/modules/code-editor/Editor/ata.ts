@@ -1,0 +1,18 @@
+import typescript from 'typescript'
+import { setupTypeAcquisition } from '@typescript/ata'
+
+export function createATA(onDownloadFile: (code: string, path: string) => void) {
+  const ata = setupTypeAcquisition({
+    projectName: 'my-ata',
+    typescript,
+    logger: console,
+    delegate: {
+      receivedFile(code, path) {
+        // console.log('自动下载的包', path)
+        onDownloadFile(code, path)
+      },
+    },
+  })
+
+  return ata
+}
