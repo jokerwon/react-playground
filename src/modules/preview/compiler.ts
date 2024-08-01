@@ -33,8 +33,6 @@ function customResolver(files: Files): PluginObj {
 
 // 添加 React 的自动导入
 export const beforeTransformCode = (filename: string, code: string) => {
-  console.log(filename);
-  
   let _code = code
   const regexReact = /import\s+React\s+/g
   if ((filename.endsWith('.jsx') || filename.endsWith('.tsx')) && !regexReact.test(code)) {
