@@ -4,7 +4,7 @@ import { PlaygroundContext } from '../../context/PlaygroundContext'
 export default function ThemeSwitcher() {
   const { theme, toggleTheme } = useContext(PlaygroundContext)
   return (
-    <span className="inline-flex items-center text-2xl cursor-pointer" onClick={toggleTheme}>
+    <span className="inline-flex items-center cursor-pointer px-1" onClick={toggleTheme}>
       {theme === 'dark' ? (
         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 32 32">
           <path

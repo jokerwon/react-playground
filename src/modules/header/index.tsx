@@ -1,5 +1,8 @@
-import reactLogo from '@/assets/react.svg'
 import ThemeSwitcher from '../../components/theme-switcher'
+import Share from '../../components/share'
+
+import reactLogo from '@/assets/react.svg'
+import Donwload from '../../components/download'
 
 export default function Header() {
   return (
@@ -8,7 +11,11 @@ export default function Header() {
         <img src={reactLogo} />
         <span className="ml-2 text-xl font-semibold">React Playground</span>
       </h1>
-      <ThemeSwitcher />
+      <div className="flex items-center text-lg">
+        <Donwload className="mr-2" />
+        <Share className="mr-2" />
+        <ThemeSwitcher />
+      </div>
     </nav>
   )
 }
