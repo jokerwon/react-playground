@@ -3,6 +3,18 @@ import type { PluginObj } from '@babel/core'
 import { File, Files } from '../../context/PlaygroundContext'
 import { ENTRY_FILE_NAME } from '../../files'
 
+self.addEventListener('message', ({ data }) => {
+  if (data?.type !== 'COMPILE') return
+  try {
+    self.postMessage({
+      type: 'COMPILED_CODE',
+      data: compile(data.data),
+    })
+  } catch (e) {
+    self.postMessage({ type: 'ERROR', error: e })
+  }
+})
+
 function customResolver(files: Files): PluginObj {
   return {
     visitor: {

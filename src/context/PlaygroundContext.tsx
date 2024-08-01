@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, useEffect, useState } from 'react'
 import { compress, fileName2Language, uncompress } from '../utils'
-import { initFiles } from '../files'
+import { APP_COMPONENT_FILE_NAME, initFiles } from '../files'
 
 export interface File {
   name: string
@@ -44,8 +44,8 @@ const getFilesFromHash = () => {
 
 export const PlaygroundProvider = (props: PropsWithChildren) => {
   const [files, setFiles] = useState<Files>(getFilesFromHash() || initFiles)
-  const [selectedFileName, setSelectedFileName] = useState('App.tsx')
-  const [theme, setTheme] = useState<Theme>('dark')
+  const [selectedFileName, setSelectedFileName] = useState(APP_COMPONENT_FILE_NAME)
+  const [theme, setTheme] = useState<Theme>('light')
 
   const addFile = (name: string) => {
     files[name] = {

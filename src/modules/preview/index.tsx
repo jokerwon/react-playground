@@ -1,7 +1,8 @@
-import { useCallback, useContext, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { debounce } from 'lodash-es'
 // import Editor from '../code-editor/Editor'
 import { PlaygroundContext } from '../../context/PlaygroundContext'
-import { compile } from './compiler'
+import CompilerWorker from './compiler.worker?worker'
 import iframeRaw from './iframe.html?raw'
 import { IMPORT_MAP_FILE_NAME } from '../../files'
 import Message from '../../components/message'
@@ -17,6 +18,7 @@ export default function Preview() {
   const { files } = useContext(PlaygroundContext)
   const [compiledCode, setCompiledCode] = useState('')
   const [error, setError] = useState('')
+  const compilerWorkerRef = useRef<Worker>()
 
   const getIFrameURL = useCallback(() => {
     const res = iframeRaw
@@ -28,12 +30,33 @@ export default function Preview() {
 
   const [iframeURL, setIframeURL] = useState(getIFrameURL())
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(
+    debounce(() => {
+      // 重新编译时先清楚错误信息
+      setError('')
+      compilerWorkerRef.current?.postMessage({
+        type: 'COMPILE',
+        data: files,
+      })
+    }, 500),
+    [files]
+  )
+
   useEffect(() => {
-    // 重新编译时先清楚错误信息
-    setError('')
-    const res = compile(files)
-    setCompiledCode(res)
-  }, [files])
+    if (compilerWorkerRef.current) return
+    compilerWorkerRef.current = new CompilerWorker()
+    compilerWorkerRef.current.addEventListener('message', ({ data }) => {
+      if (data?.type === 'COMPILED_CODE') {
+        setCompiledCode(data.data)
+        return
+      }
+      if (data?.type === 'ERROR') {
+        setError(data.error)
+        return
+      }
+    })
+  }, [])
 
   useEffect(() => {
     setIframeURL(getIFrameURL())
