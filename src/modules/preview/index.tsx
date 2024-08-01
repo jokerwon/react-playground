@@ -4,10 +4,19 @@ import { PlaygroundContext } from '../../context/PlaygroundContext'
 import { compile } from './compiler'
 import iframeRaw from './iframe.html?raw'
 import { IMPORT_MAP_FILE_NAME } from '../../files'
+import Message from '../../components/message'
+
+interface MessageData {
+  data: {
+    type: string
+    message: string
+  }
+}
 
 export default function Preview() {
   const { files } = useContext(PlaygroundContext)
   const [compiledCode, setCompiledCode] = useState('')
+  const [error, setError] = useState('')
 
   const getIFrameURL = useCallback(() => {
     const res = iframeRaw
@@ -20,6 +29,8 @@ export default function Preview() {
   const [iframeURL, setIframeURL] = useState(getIFrameURL())
 
   useEffect(() => {
+    // 重新编译时先清楚错误信息
+    setError('')
     const res = compile(files)
     setCompiledCode(res)
   }, [files])
@@ -28,6 +39,20 @@ export default function Preview() {
     setIframeURL(getIFrameURL())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [files[IMPORT_MAP_FILE_NAME].value, compiledCode])
+
+  const handleMessage = useCallback((msg: MessageData) => {
+    const { type, message } = msg.data
+    if (type === 'ERROR') {
+      setError(message)
+    }
+  }, [])
+
+  useEffect(() => {
+    window.addEventListener('message', handleMessage)
+    return () => {
+      window.removeEventListener('message', handleMessage)
+    }
+  }, [handleMessage])
 
   return (
     <div className="h-full">
@@ -40,6 +65,7 @@ export default function Preview() {
           border: 'none',
         }}
       />
+      <Message type="error" content={error} />
       {/* <Editor
         file={{
           name: 'dist.js',

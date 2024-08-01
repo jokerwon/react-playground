@@ -10,12 +10,13 @@ export interface EditorFile {
 
 interface Props {
   file: EditorFile
+  theme: EditorProps['theme']
   onChange?: EditorProps['onChange']
   options?: editor.IStandaloneEditorConstructionOptions
 }
 
 export default function Editor(props: Props) {
-  const { file, onChange, options } = props
+  const { file, theme, onChange, options } = props
 
   const onEditorMount: OnMount = (editor, monaco) => {
     // 监听按键
@@ -51,6 +52,7 @@ export default function Editor(props: Props) {
       language={file.language}
       value={file.value}
       options={{
+        theme: theme ? `vs-${theme}` : undefined,
         fontSize: 14,
         scrollBeyondLastLine: false, // 到最后一行后是否可以继续滚动
         minimap: {

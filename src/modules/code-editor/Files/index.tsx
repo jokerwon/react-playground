@@ -32,7 +32,7 @@ export default function Files() {
   }
 
   return (
-    <div className="tabs relative flex h-[38px] overflow-y-hidden overflow-x-auto border-b border-[#ddd] text-[#444] whitespace-nowrap">
+    <div className="bg-[var(--rc-base-bg)] text-[var(--rc-base-color)] tabs relative flex h-[38px] overflow-y-hidden overflow-x-auto whitespace-nowrap">
       {tabs.map((item, index, arr) => (
         <FileName
           value={item}
@@ -48,8 +48,8 @@ export default function Files() {
           }}
         />
       ))}
-      <div className="h-full inline-block ml-4 px-1 leading-9 text-lg cursor-pointer select-none" onClick={handleAddFile}>
-        +
+      <div className="h-full inline-flex items-center ml-1 px-1 text-lg cursor-pointer select-none" onClick={handleAddFile}>
+        <span className='mb-[3px]'>+</span>
       </div>
     </div>
   )

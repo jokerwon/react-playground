@@ -37,12 +37,18 @@ const FileName: React.FC<FileNameProps> = (props) => {
   }, [creating])
 
   return (
-    <div className={classnames('relative inline-block text-[13px] cursor-pointer', actived ? 'cursor-text border-b-2 border-[#00D8FF] text-[#00D8FF]' : null)} onClick={onClick}>
+    <div
+      className={classnames(
+        'bg-[var(--rc-base-bg)] text-[var(--rc-base-color)] relative inline-flex items-center text-[13px] cursor-pointer',
+        actived ? 'text-[var(--rc-primary-color)] cursor-text after:content-[""] after:absolute after:bottom-0 after:w-full after:h-[3px] after:bg-[var(--rc-primary-color)]' : null
+      )}
+      onClick={onClick}
+    >
       {editing ? (
         <input ref={inputRef} value={name} className="w-[80px] h-full px-[10px] outline-none border-none" onChange={(e) => setFileName(e.target.value)} onBlur={handleInputBlur} />
       ) : (
         <>
-          <span className="inline-block px-[10px] pt-[8px] pb-[6px] leading-5" onDoubleClick={!readonly ? handleDoubleClick : () => {}}>
+          <span className="inline-block px-[10px] mb-0.5" onDoubleClick={!readonly ? handleDoubleClick : () => {}}>
             {name}
           </span>
           {!readonly && (

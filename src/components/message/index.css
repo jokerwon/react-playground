@@ -1,0 +1,53 @@
+.rp-message__wrapper {
+  position: absolute;
+  right: 8px;
+  bottom: 0;
+  left: 8px;
+  z-index: 10;
+  display: flex;
+  max-height: calc(100% - 300px);
+  min-height: 40px;
+  margin-bottom: 8px;
+  color: var(--rc-message-color);
+  background-color: var(--rc-message-bg-color);
+  border: 2px solid #fff;
+  border-radius: 6px;
+  border-color: var(--rc-message-color);
+}
+
+.rp-message__wrapper.error {
+  --rc-message-color: #f56c6c;
+  --rc-message-bg-color: #fef0f0;
+}
+.rp-message__wrapper.warn {
+  --rc-message-color: #e6a23c;
+  --rc-message-bg-color: #fdf6ec;
+}
+
+.rp-message__wrapper > pre {
+  padding: 12px 20px;
+  margin: 0;
+  overflow: auto;
+  white-space: break-spaces;
+}
+
+.rp-message__wrapper .rp-message__dismiss {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+
+  display: block;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+
+  font-size: 9px;
+  line-height: 18px;
+  color: var(--rc-message-bg-color);
+
+  text-align: center;
+  cursor: pointer;
+  background-color: var(--rc-message-color);
+  border: none;
+  border-radius: 9px;
+}

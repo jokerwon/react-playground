@@ -1,0 +1,11 @@
+.light {
+  --rc-base-color: #3e3e3e;
+  --rc-primary-color: #00d8ff;
+  --rc-base-bg: #fff;
+}
+
+.dark {
+  --rc-base-color: #fff;
+  --rc-primary-color: #00d8ff;
+  --rc-base-bg: #1a1a1a;
+}

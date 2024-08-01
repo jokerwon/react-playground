@@ -5,7 +5,7 @@ import Editor from './Editor'
 import Files from './Files'
 
 export default function CodeEditor() {
-  const { files, selectedFileName, setFiles } = useContext(PlaygroundContext)
+  const { theme, files, selectedFileName, setFiles } = useContext(PlaygroundContext)
 
   const file = files[selectedFileName]
 
@@ -20,7 +20,7 @@ export default function CodeEditor() {
         <Files />
       </div>
       <div className="flex-1">
-        <Editor file={file} onChange={debounce(onEditorChange, 500)} />
+        <Editor theme={theme} file={file} onChange={debounce(onEditorChange, 500)} />
       </div>
     </div>
   )
